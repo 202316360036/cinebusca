@@ -128,8 +128,19 @@ function alternarFavorito(filme) {
         favoritos.push(filme);
         salvarFavoritos(favoritos);
     }
-    // redesenha a seção pra refletir a mudança
+    // sincroniza todas as estrelas desse filme (pode aparecer nos resultados E nos favoritos ao mesmo tempo)
+    sincronizarBotoesFavorito(filme.imdbID);
+    // redesenha a seção "Meus Favoritos" pra refletir a mudança
     renderizarFavoritos();
+}
+
+// atualiza a aparência de todos os botões-estrela que apontam pro mesmo filme na página
+function sincronizarBotoesFavorito(imdbID) {
+    var botoes = document.querySelectorAll(".btn-favorito[data-imdbid='" + imdbID + "']");
+    var favoritado = estaFavoritado(imdbID);
+    for (var i = 0; i < botoes.length; i++) {
+        botoes[i].textContent = favoritado ? "★" : "☆";
+    }
 }
 
 // desenha a seção "Meus Favoritos" na tela
@@ -168,13 +179,14 @@ function renderizarFavoritos() {
 function criarBotaoFavorito(filme) {
     var botao = document.createElement("button");
     botao.className = "btn-favorito";
+    // guarda o id da OMDb no próprio botão pra sincronizar todos os botões desse filme depois
+    botao.dataset.imdbid = filme.imdbID;
     botao.textContent = estaFavoritado(filme.imdbID) ? "★" : "☆";
     botao.setAttribute("aria-label", "Favoritar " + filme.Title);
 
     botao.addEventListener("click", function () {
+        // alternarFavorito já cuida de atualizar TODAS as estrelas desse filme (nos resultados e nos favoritos)
         alternarFavorito(filme);
-        // atualiza o próprio botão que foi clicado (estrela cheia ou vazia)
-        botao.textContent = estaFavoritado(filme.imdbID) ? "★" : "☆";
     });
 
     return botao;
