@@ -196,3 +196,76 @@ main {
   cursor: pointer;
   font-size: 18px;
 }
+
+/* ============================================================
+   RESPONSIVIDADE - Davison
+   ============================================================ */
+
+/* Tablet e telas médias (até 900px) */
+@media (max-width: 900px) {
+  header {
+    padding: 15px 20px;
+    gap: 12px;
+  }
+
+  main {
+    padding: 15px 20px;
+  }
+
+  h1 {
+    font-size: 20px;
+  }
+
+  input {
+    max-width: 100%;
+  }
+
+  .card-filme {
+    width: calc(50% - 10px); /* 2 cards por linha (desconta metade do gap: 20px) */
+  }
+
+  .card-filme img {
+    height: 260px;
+  }
+}
+
+/* Celular (até 600px) */
+@media (max-width: 600px) {
+  header {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 12px;
+    gap: 10px;
+  }
+
+  header h1 {
+    text-align: center;
+    font-size: 18px;
+  }
+
+  header a {
+    text-align: center;
+  }
+
+  main {
+    padding: 12px;
+  }
+
+  .card-filme {
+    width: 100%; /* 1 card por linha ocupando toda a largura */
+  }
+
+  .card-filme img {
+    height: auto;
+    aspect-ratio: 2 / 3; /* proporção clássica de pôster de cinema */
+  }
+
+  .modal-conteudo {
+    width: 90%;
+    max-width: 320px;
+  }
+
+  #secao-favoritos h2 {
+    font-size: 18px;
+  }
+}
