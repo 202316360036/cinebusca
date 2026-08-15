@@ -5,9 +5,23 @@
   font-family: Arial, sans-serif;
 }
 
+/* overflow-x: hidden trava a rolagem horizontal se algo estourar a largura;
+   evita que a tela "balance" no celular quando algum elemento passa da viewport */
+html,
+body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
 body {
   background-color: black;
   color: white;
+}
+
+/* garante que nenhuma imagem (pôster) ultrapasse a largura do container */
+img {
+  max-width: 100%;
+  display: block;
 }
 
 header {
