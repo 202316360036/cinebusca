@@ -101,12 +101,34 @@
             margin-top: 40px;
         }
 
-        #secao-favoritos h2 {
-            font-size: 20px;
-            margin-bottom: 15px;
-            color: gold;
+        /* h2 + botão "Limpar todos" lado a lado */
+        .cabecalho-favoritos {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             border-bottom: 1px solid #333;
             padding-bottom: 8px;
+            margin-bottom: 15px;
+        }
+
+        #secao-favoritos h2 {
+            font-size: 20px;
+            color: gold;
+        }
+
+        #btn-limpar-favoritos {
+            font-size: 13px;
+            padding: 6px 12px;
+            border: 1px solid #555;
+            background-color: #222;
+            color: #ccc;
+            cursor: pointer;
+        }
+
+        #btn-limpar-favoritos:hover {
+            background-color: #400;
+            color: white;
+            border-color: #900;
         }
 
         #lista-favoritos {

@@ -83,6 +83,24 @@ function mostrarResultados(listaDeFilmes) {
 
 var CHAVE_FAVORITOS = "cinebusca_favoritos";
 var listaFavoritos = document.getElementById("lista-favoritos");
+var linkFavoritos = document.getElementById("link-favoritos");
+var botaoLimparFavoritos = document.getElementById("btn-limpar-favoritos");
+
+// clique no "Limpar todos" — pede confirmação antes de apagar
+botaoLimparFavoritos.addEventListener("click", function () {
+    var confirmou = confirm("Remover todos os favoritos? Essa ação não pode ser desfeita.");
+    if (!confirmou) {
+        return;
+    }
+    // removeItem apaga a chave inteira do localStorage; carregarFavoritos passa a devolver []
+    localStorage.removeItem(CHAVE_FAVORITOS);
+    renderizarFavoritos();
+    // atualiza também as estrelas dos cards de busca que estejam na tela (todas voltam pra ☆)
+    var todosBotoes = document.querySelectorAll(".btn-favorito");
+    for (var i = 0; i < todosBotoes.length; i++) {
+        todosBotoes[i].textContent = "☆";
+    }
+});
 
 // lê os favoritos salvos no navegador e devolve como array
 function carregarFavoritos() {
@@ -147,6 +165,10 @@ function sincronizarBotoesFavorito(imdbID) {
 function renderizarFavoritos() {
     var favoritos = carregarFavoritos();
     listaFavoritos.innerHTML = "";
+
+    // atualiza o contador no link do menu ("Favoritos (3)") e mostra/esconde o botão "Limpar todos"
+    linkFavoritos.textContent = "Favoritos (" + favoritos.length + ")";
+    botaoLimparFavoritos.hidden = favoritos.length === 0;
 
     if (favoritos.length === 0) {
         listaFavoritos.innerHTML = "<p>Você ainda não favoritou nenhum filme.</p>";
