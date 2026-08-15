@@ -1,6 +1,9 @@
-// BUSCA DE FILMES c/  API OMDb
-var API_KEY = "e532329f";
-var API_URL = "https://www.omdbapi.com/";
+// BUSCA DE FILMES c/  API TMDB
+var API_KEY = "020281b3264f33dc85a35c83106d624f";
+var API_URL = "https://api.themoviedb.org/3/search/";
+
+
+// SEÇÃO API - Julianna
 
 // seeleção de elementos html
 var inputBusca = document.getElementById("busca");
@@ -8,6 +11,31 @@ var selectCategoria = document.getElementById("categoria");
 var botaoBuscar = document.getElementById("btn-buscar");
 var divResultados = document.getElementById("resultados");
 var mensagem = document.getElementById("mensagem");
+
+// SEÇÃO MODAL - Diego
+var modal = document.getElementById("modal");
+var textoModal = document.getElementById("texto-modal");
+var tituloModal = document.getElementById("titulo-modal");
+var fecharModalBtn = document.getElementById("fechar-modal");
+
+function abrirModal(texto, titulo) {
+    tituloModal.textContent = titulo || "Atenção";
+    textoModal.textContent = texto;
+    modal.style.display = "flex";
+}
+
+function fecharModal() {
+    modal.style.display = "none";
+}
+
+fecharModalBtn.addEventListener("click", fecharModal);
+
+// clicar fora do conteúdo (no fundo escuro) também fecha o modal
+modal.addEventListener("click", function (evento) {
+    if (evento.target === modal) {
+        fecharModal();
+    }
+});
 
 // botão da função de buscar
 botaoBuscar.addEventListener("click", function () {
@@ -22,34 +50,62 @@ inputBusca.addEventListener("keydown", function (evento) {
 
 // função de busca para filmes e as séries
 function buscarFilmes() {
-    var termo = inputBusca.value;
+    // trim tira espaços em branco do começo e do fim
+    var termo = inputBusca.value.trim();
     var tipo = selectCategoria.value;
     divResultados.innerHTML = "";
     if (termo === "") {
         mensagem.textContent = "Digite um título para buscar.";
+        abrirModal("Você precisa escrever o nome de um filme ou série antes de procurar.", "Campo vazio");
         return;
     }
     mensagem.textContent = "Buscando...";
     // chamada de API
-    var url = API_URL + "?apikey=" + API_KEY + "&type=" + tipo + "&s=" + termo;
+    var endpoint = (tipo === "series") ? "tv" : "movie";
+    var url = API_URL + endpoint + "?api_key=" + API_KEY + "&language=pt-BR&query=" + termo;
 
-    
+
     fetch(url)
         .then(function (resposta) {
+            // resposta.ok é false quando o status HTTP é 4xx/5xx (ex.: 401, 500)
+            if (!resposta.ok) {
+                throw new Error("Erro na API");
+            }
             return resposta.json();
         })
         .then(function (dados) {
-            if (dados.Response === "False") {
+            if (!dados.results || dados.results.length === 0) {
                 mensagem.textContent = "Nenhum resultado encontrado.";
+                abrirModal("Não encontrei nada com esse nome. Tenta outra busca.", "Sem resultado");
             } else {
                 mensagem.textContent = "";
-                mostrarResultados(dados.Search);
+                mostrarResultados(converterResultados(dados.results, endpoint));
             }
         })
         .catch(function (erro) {
             mensagem.textContent = "Erro ao buscar. Tente novamente.";
+            abrirModal("Não foi possível conectar com o serviço de busca. Verifica sua internet e tenta de novo.", "Erro");
             console.log(erro);
         });
+}
+
+function converterResultados(resultados, tipo) {
+    var lista = [];
+    for (var i = 0; i < resultados.length; i++) {
+        var item = resultados[i];
+        var titulo = (tipo === "tv") ? item.name : item.title;
+        var data = (tipo === "tv") ? item.first_air_date : item.release_date;
+        var ano = data ? data.substring(0, 4) : "";
+        var poster = item.poster_path ? ("https://image.tmdb.org/t/p/w300" + item.poster_path) : "N/A";
+
+        lista.push({
+            imdbID: item.id,
+            Poster: poster,
+            Title: titulo,
+            Year: ano
+        });
+    }
+    return lista;
 }
 
 function mostrarResultados(listaDeFilmes) {
@@ -119,7 +175,7 @@ function salvarFavoritos(favoritos) {
     localStorage.setItem(CHAVE_FAVORITOS, JSON.stringify(favoritos));
 }
 
-// verifica se um filme (pelo id da OMDb) já está nos favoritos
+// verifica se um filme (pelo id) já está nos favoritos
 function estaFavoritado(imdbID) {
     var favoritos = carregarFavoritos();
     for (var i = 0; i < favoritos.length; i++) {
@@ -201,7 +257,7 @@ function renderizarFavoritos() {
 function criarBotaoFavorito(filme) {
     var botao = document.createElement("button");
     botao.className = "btn-favorito";
-    // guarda o id da OMDb no próprio botão pra sincronizar todos os botões desse filme depois
+    // guarda o id do filme no próprio botão pra sincronizar todos os botões desse filme depois
     botao.dataset.imdbid = filme.imdbID;
     botao.textContent = estaFavoritado(filme.imdbID) ? "★" : "☆";
     botao.setAttribute("aria-label", "Favoritar " + filme.Title);

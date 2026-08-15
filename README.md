@@ -1,15 +1,16 @@
 # CineBusca
 
-Buscador de filmes e séries usando a API pública **OMDb**. Projeto final da disciplina **Web 1** — IFBA Campus Valença.
+Buscador de filmes e séries usando a API pública **TMDB**. Projeto final da disciplina **Web 1** — IFBA Campus Valença.
 
 🌐 **Site ao vivo:** https://202316360036.github.io/cinebusca/
 
 ## Funcionalidades
 
-- Busca de filmes e séries por título na API OMDb
+- Busca de filmes e séries por título na API TMDB (resultados em português)
 - Filtro por tipo (filme ou série)
 - Favoritar filmes com persistência entre sessões (localStorage)
 - Contador de favoritos e botão "Limpar todos"
+- Modal de aviso para erros e buscas vazias
 
 ## Como rodar localmente
 
@@ -37,7 +38,7 @@ Depois acesse `http://localhost:8000`.
 - HTML5
 - CSS3
 - JavaScript (sem frameworks)
-- API: [OMDb](https://www.omdbapi.com/)
+- API: [TMDB](https://www.themoviedb.org/)
 - Hospedagem: GitHub Pages
 
 ## Estrutura dos arquivos

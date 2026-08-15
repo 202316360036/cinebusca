@@ -15,3 +15,6 @@ desktop.ini
 
 # Logs
 *.log
+
+# Pasta de rascunhos/atualizações enviadas pelos colegas (já integradas)
+atualizacao/
