@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Estudo — Favoritos + localStorage (Elder)</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    }
+
+    html, body {
+      overflow-x: hidden;
+      max-width: 100%;
+    }
+
+    body {
+      background-color: #0a0a0a;
+      color: #e0e0e0;
+      line-height: 1.6;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      padding: 30px 20px;
+      border-bottom: 2px solid gold;
+      margin-bottom: 40px;
+    }
+
+    header h1 {
+      color: gold;
+      font-size: 28px;
+      margin-bottom: 8px;
+    }
+
+    header p {
+      color: #999;
+      font-size: 15px;
+    }
+
+    section {
+      margin-bottom: 40px;
+    }
+
+    h2 {
+      color: gold;
+      font-size: 22px;
+      margin-bottom: 20px;
+      border-left: 4px solid gold;
+      padding-left: 12px;
+    }
+
+    h3 {
+      color: #ffd766;
+      font-size: 17px;
+      margin-bottom: 10px;
+    }
+
+    .card {
+      background-color: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .card.historia {
+      border-left: 4px solid gold;
+    }
+
+    .card .rotulo {
+      display: inline-block;
+      background: gold;
+      color: black;
+      font-weight: bold;
+      font-size: 12px;
+      padding: 3px 10px;
+      border-radius: 4px;
+      margin-bottom: 12px;
+      letter-spacing: 0.5px;
+    }
+
+    pre {
+      background: #000;
+      border: 1px solid #333;
+      border-radius: 6px;
+      padding: 14px;
+      overflow-x: auto;
+      margin: 12px 0;
+      font-size: 14px;
+    }
+
+    code {
+      font-family: "Courier New", Consolas, monospace;
+      color: #a5f3a5;
+    }
+
+    .fala {
+      font-style: italic;
+      color: #ccc;
+      background: #222;
+      border-left: 3px solid #666;
+      padding: 10px 14px;
+      margin-top: 10px;
+      border-radius: 0 4px 4px 0;
+    }
+
+    .combinacoes ul {
+      list-style: none;
+    }
+
+    .combinacoes li {
+      padding: 10px 0;
+      border-bottom: 1px dashed #333;
+    }
+
+    .combinacoes li:last-child {
+      border-bottom: none;
+    }
+
+    .combinacoes strong {
+      color: gold;
+    }
+
+    .regra-ouro {
+      background: linear-gradient(135deg, #2a1f00 0%, #1a1a1a 100%);
+      border: 2px solid gold;
+      border-radius: 10px;
+      padding: 25px;
+      text-align: center;
+      margin: 30px 0;
+    }
+
+    .regra-ouro h2 {
+      border: none;
+      padding: 0;
+      margin-bottom: 15px;
+    }
+
+    .regra-ouro .frase {
+      font-size: 18px;
+      font-style: italic;
+      color: gold;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    .pergunta {
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin-bottom: 12px;
+    }
+
+    .pergunta .q {
+      color: #ffd766;
+      font-weight: bold;
+      margin-bottom: 8px;
+      font-size: 15px;
+    }
+
+    .pergunta .r {
+      color: #ccc;
+      font-size: 14px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px 0;
+      color: #666;
+      font-size: 13px;
+      border-top: 1px solid #333;
+      margin-top: 40px;
+    }
+
+    /* Responsividade */
+    @media (max-width: 600px) {
+      body {
+        padding: 12px;
+      }
+      header h1 {
+        font-size: 22px;
+      }
+      h2 {
+        font-size: 18px;
+      }
+      h3 {
+        font-size: 15px;
+      }
+      pre {
+        font-size: 12px;
+      }
+    }
+
+    /* Impressão limpa (pra salvar como PDF) */
+    @media print {
+      body {
+        background: white;
+        color: black;
+      }
+      .card, .pergunta, .regra-ouro {
+        border: 1px solid #999;
+        background: white;
+        page-break-inside: avoid;
+      }
+      pre {
+        background: #f5f5f5;
+        color: black;
+      }
+      code {
+        color: #006600;
+      }
+      h2, h3, .rotulo, header h1, .regra-ouro .frase {
+        color: black;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <header>
+      <h1>Favoritos + localStorage</h1>
+      <p>Guia de estudo — Elder • Projeto CineBusca (Web 1)</p>
+    </header>
+
+    <section>
+      <h2>As 3 histórias que abrem todas as portas</h2>
+
+      <div class="card historia">
+        <span class="rotulo">HISTÓRIA 1</span>
+        <h3>Como eu SALVO?</h3>
+        <pre><code>localStorage.setItem(
+  CHAVE_FAVORITOS,
+  JSON.stringify(favoritos)
+);</code></pre>
+        <div class="fala">
+          "Converto o array em string com JSON.stringify e gravo no localStorage."
+        </div>
+      </div>
+
+      <div class="card historia">
+        <span class="rotulo">HISTÓRIA 2</span>
+        <h3>Como eu LEIO?</h3>
+        <pre><code>var dados = localStorage.getItem(CHAVE_FAVORITOS);
+if (dados === null) return [];
+return JSON.parse(dados);</code></pre>
+        <div class="fala">
+          "getItem retorna null se nunca gravei nada, então devolvo array vazio. Senão, JSON.parse converte a string de volta em array."
+        </div>
+      </div>
+
+      <div class="card historia">
+        <span class="rotulo">HISTÓRIA 3</span>
+        <h3>Como eu VERIFICO se já está favoritado?</h3>
+        <pre><code>for (var i = 0; i &lt; favoritos.length; i++) {
+  if (favoritos[i].imdbID === imdbID) return true;
+}
+return false;</code></pre>
+        <div class="fala">
+          "Percorro o array procurando o ID. Se acho, retorno true. Se termino o loop sem achar, retorno false."
+        </div>
+      </div>
+    </section>
+
+    <section class="combinacoes">
+      <h2>O resto são combinações das 3</h2>
+      <div class="card">
+        <ul>
+          <li><strong>alternarFavorito</strong> — Verifica (h3) → remove ou adiciona → salva (h1)</li>
+          <li><strong>renderizarFavoritos</strong> — Lê (h2) → percorre e cria os cards</li>
+          <li><strong>sincronizarBotoesFavorito</strong> — Verifica (h3) → atualiza estrelas na tela</li>
+          <li><strong>criarBotaoFavorito</strong> — Verifica (h3) pra desenhar ★ ou ☆</li>
+          <li><strong>Botão "Limpar todos"</strong> — localStorage.removeItem (variação da h1)</li>
+        </ul>
+      </div>
+    </section>
+
+    <div class="regra-ouro">
+      <h2>💡 Regra de Ouro</h2>
+      <p>Se souber as 3 histórias, tu explica <strong>qualquer</strong> função do código.</p>
+      <p class="frase">"primeiro leio, depois verifico, depois salvo."</p>
+    </div>
+
+    <section>
+      <h2>🎤 Perguntas que o professor vai fazer</h2>
+
+      <div class="pergunta">
+        <div class="q">❓ "Por que JSON?"</div>
+        <div class="r">Porque localStorage só aceita string. JSON converte array/objeto ↔ string.</div>
+      </div>
+
+      <div class="pergunta">
+        <div class="q">❓ "E se o usuário abrir o site pela primeira vez?"</div>
+        <div class="r">getItem retorna null. Meu código verifica e devolve array vazio pra não quebrar.</div>
+      </div>
+
+      <div class="pergunta">
+        <div class="q">❓ "Se eu fechar o navegador os favoritos somem?"</div>
+        <div class="r">Não. localStorage persiste até limpar o cache. Diferente do sessionStorage.</div>
+      </div>
+
+      <div class="pergunta">
+        <div class="q">❓ "E em outro navegador?"</div>
+        <div class="r">Não aparecem. localStorage é isolado por navegador/perfil. Pra sincronizar precisaria de banco de dados no servidor.</div>
+      </div>
+
+      <div class="pergunta">
+        <div class="q">❓ "Por que confirmação no 'Limpar todos'?"</div>
+        <div class="r">Ação destrutiva sem desfazer. Uso confirm() do navegador — se cancelar, a função sai.</div>
+      </div>
+
+      <div class="pergunta">
+        <div class="q">❓ "Onde vejo o localStorage funcionando?"</div>
+        <div class="r">F12 → Application → Local Storage → chave <code>cinebusca_favoritos</code>.</div>
+      </div>
+
+      <div class="pergunta">
+        <div class="q">❓ "Por que 'criarBotaoFavorito' é função separada?"</div>
+        <div class="r">Se criasse o listener dentro do for, todos os botões clicariam no mesmo filme por causa de closure. Função separada garante escopo próprio pra cada botão.</div>
+      </div>
+
+      <div class="pergunta">
+        <div class="q">❓ "O que é dataset.imdbid?"</div>
+        <div class="r">Forma JS de acessar atributo data-imdbid do HTML. Serve pra achar todos os botões do mesmo filme com querySelectorAll.</div>
+      </div>
+
+      <div class="pergunta">
+        <div class="q">❓ "Tem limite de tamanho no localStorage?"</div>
+        <div class="r">Cerca de 5MB por origem. Mais que suficiente pra centenas de filmes.</div>
+      </div>
+
+      <div class="pergunta">
+        <div class="q">❓ "É a mesma coisa que cookie?"</div>
+        <div class="r">Não. Cookie vai pro servidor em cada requisição. localStorage fica só no navegador, não trafega na rede.</div>
+      </div>
+    </section>
+
+    <footer>
+      Pronto pra apresentar 💪<br>
+      Projeto CineBusca — 3ª avaliação Web 1 — IFBA Valença
+    </footer>
+
+  </div>
+</body>
+</html>
