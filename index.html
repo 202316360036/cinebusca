@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CineBusca</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Catálogo de Filmes e Séries</h1>
+        <button>Menu</button>
+        <div>
+            <select name="categoria" id="categoria">
+                <option value="movie">Filmes</option>
+                <option value="series">Séries</option>
+            </select>
+        </div>
+        <input type="text" id="busca" placeholder="Buscar por títulos ...">
+        <button id="btn-buscar">Buscar</button>
+        <a href="#secao-favoritos">Favoritos</a>
+        <a href="#">Entrar ou Cadastrar-se</a>
+    </header>
+
+    <main>
+        <p id="mensagem"></p>
+        <div id="resultados"></div>
+
+        <section id="secao-favoritos">
+            <h2>Meus Favoritos</h2>
+            <div id="lista-favoritos"></div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+# Documentação interna do agente (não vai pro repo)
+CLAUDE (6).md
+CLAUDE.md
+
+# Sistema (Windows / macOS)
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Editores/IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
