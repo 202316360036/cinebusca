@@ -37,6 +37,18 @@ modal.addEventListener("click", function (evento) {
     }
 });
 
+// botão "Início" — reseta a tela pro estado inicial (limpa busca, resultados e volta pro topo)
+var botaoInicio = document.getElementById("btn-inicio");
+botaoInicio.addEventListener("click", function () {
+    inputBusca.value = "";
+    divResultados.innerHTML = "";
+    mensagem.textContent = "";
+    // scrollTo(0, 0) rola a janela pro canto superior esquerdo
+    window.scrollTo(0, 0);
+    // devolve o foco pro campo de busca pra facilitar nova pesquisa
+    inputBusca.focus();
+});
+
 // botão da função de buscar
 botaoBuscar.addEventListener("click", function () {
     buscarFilmes();
